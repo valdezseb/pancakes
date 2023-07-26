@@ -57,6 +57,14 @@ def data_analysis_page():
     st.title('Data Analysis Page')
     st.write('This is the data analysis page of my app.')
     # Add your data analysis and visualization code here
+   
+
+
+# Define the layout of the chat bot page
+def chat_bot_page():
+    st.title('Chat Bot Page')
+    st.write('This is the chat bot page of my app.')
+    # Add your chat bot code here
     # Load the Pinecone client using st.cache
     docsearch = load_pinecone(embeddings, "db-paseg")
     # Create the Chat and RetrievalQA objects
@@ -76,13 +84,6 @@ def data_analysis_page():
     if query:
         result = qa.run(query + '\n' + condition1)
         st.write(result)
-
-
-# Define the layout of the chat bot page
-def chat_bot_page():
-    st.title('Chat Bot Page')
-    st.write('This is the chat bot page of my app.')
-    # Add your chat bot code here
     
 
 # Define your main function
