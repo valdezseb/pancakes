@@ -20,18 +20,16 @@ def main():
     if 'page' not in st.session_state:
         st.session_state.page = 'Data Analysis'
 
+    # Define the contents of the sidebar
+    st.sidebar.title('Navigation')
+    option = st.sidebar.selectbox('Select an option', ('Data Analysis', 'Chat Bot'))
+
     # Define the different pages of your app
-    if st.session_state.page == 'Data Analysis':
-        # Define the contents of the data analysis page
-        st.sidebar.title('Navigation')
-        option = st.sidebar.selectbox('Select an option', ('Data Analysis', 'Chat Bot'))
-
-        if option == 'Data Analysis':
-            data_analysis_page()
-        elif option == 'Chat Bot':
-            st.session_state.page = 'Chat Bot'
-
-    elif st.session_state.page == 'Chat Bot':
+    if option == 'Data Analysis':
+        st.session_state.page = 'Data Analysis'
+        data_analysis_page()
+    elif option == 'Chat Bot':
+        st.session_state.page = 'Chat Bot'
         chat_bot_page()
 
 # Call your main function to run the app
