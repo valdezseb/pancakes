@@ -60,9 +60,9 @@ def query():
     # Let the user input a query
     #query = st.text_input("Enter your query:")
     # Run the QA system and display the result using Streamlit
-    if query:
-        result = qa.run(query + '\n' + condition1)
-        st.write(result)
+
+    result = qa.run(query + '\n' + condition1)
+    st.write(result)
     
 
 
