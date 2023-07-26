@@ -50,6 +50,22 @@ def load_pinecone(embeddings, index_name):
 # Load the Pinecone client using st.cache
 docsearch = load_pinecone(embeddings, "db-paseg")
 
+@st.cache_data
+def query():
+    # Create the Chat and RetrievalQA objects
+    chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
+    qachain = load_qa_chain(chat, chain_type='stuff')
+    qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
+    condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
+    # Let the user input a query
+    #query = st.text_input("Enter your query:")
+    # Run the QA system and display the result using Streamlit
+    if query:
+        result = qa.run(query + '\n' + condition1)
+        st.write(result)
+    
+
+
 
 
 # Define the layout of the data analysis page
@@ -79,11 +95,7 @@ def chat_bot_page():
     st.markdown("*Chat With The Planning and Schedule Excellence Guide ver. 5.0*", unsafe_allow_html=True)
     st.markdown("---")
     # Let the user input a query
-    query = st.text_input("Enter your query:")
-    # Run the QA system and display the result using Streamlit
-    if query:
-        result = qa.run(query + '\n' + condition1)
-        st.write(result)
+    query()
     
 
 # Define your main function
