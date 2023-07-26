@@ -11,6 +11,21 @@ def get_session():
         raise RuntimeError("Couldn't get session info")
     return session, session_id, session_info
 
+# Define the layout of the data analysis page
+def data_analysis_page():
+    st.title('Data Analysis Page')
+    st.write('This is the data analysis page of my app.')
+    # Add your data analysis and visualization code here
+
+# Define the layout of the chat bot page
+def chat_bot_page():
+    st.title('Chat Bot Page')
+    st.write('This is the chat bot page of my app.')
+    # Add your chat bot code here
+    with session:
+        if st.button('Go back to Data Analysis'):
+            session.state.page = 'Data Analysis'
+
 # Define your main function
 def main():
     session, session_id, session_info = get_session()
@@ -26,20 +41,12 @@ def main():
         option = st.sidebar.selectbox('Select an option', ('Data Analysis', 'Chat Bot'))
 
         if option == 'Data Analysis':
-            st.title('Data Analysis Page')
-            st.write('This is the data analysis page of my app.')
-            # Add your data analysis and visualization code here
+            data_analysis_page()
         elif option == 'Chat Bot':
             session.state.page = 'Chat Bot'
 
     elif session.state.page == 'Chat Bot':
-        # Define the contents of the chat bot page
-        st.title('Chat Bot Page')
-        st.write('This is the chat bot page of my app.')
-        # Add your chat bot code here
-        st.button('Go back to Data Analysis')
-        if st.button('Go back to Data Analysis'):
-            session.state.page = 'Data Analysis'
+        chat_bot_page()
 
 # Call your main function to run the app
 if __name__ == '__main__':
