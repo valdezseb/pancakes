@@ -45,7 +45,7 @@ def load_embedding():
 embeddings = load_embedding()
 
 def load_pinecone(embeddings, index_name):
-    docsearch = Pinecone.from_existing_index( embeddings, index_name)
+    docsearch = Pinecone.from_existing_index(embeddings, index_name)
     return docsearch
 
 # Load the Pinecone client using st.cache
@@ -63,7 +63,7 @@ def chat_bot_page():
     st.write('This is the chat bot page of my app.')
 
     # Load Pinecone and create Chat and RetrievalQA objects
-    docsearch = load_pinecone(embeddings,index_name)
+    #docsearch = load_pinecone(embeddings,index_name)
     chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
     qachain = load_qa_chain(chat, chain_type='stuff')
     qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
