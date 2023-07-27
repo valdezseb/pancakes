@@ -49,7 +49,7 @@ def load_pinecone(embeddings, index_name):
     return docsearch
 
 # Load the Pinecone client using st.cache
-docsearch = load_pinecone(embeddings, "db-paseg")
+docsearch = load_pinecone(embeddings, index_name)
 
 # Define the layout of the data analysis page
 def data_analysis_page():
