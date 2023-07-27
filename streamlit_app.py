@@ -76,45 +76,41 @@ def data_analysis_page():
    
 
 
-# Define the layout of the chat bot page
+# Initialize embeddings in Session State
+if 'embeddings' not in st.session_state:
+    st.session_state.embeddings = load_embedding()
+
+# Load Pinecone using st.cache
+@st.cache(allow_output_mutation=True)
+def load_pinecone(index_name):
+    docsearch = Pinecone.from_existing_index(index_name, st.session_state.embeddings)
+    return docsearch
+
+# Define the chat bot page
 def chat_bot_page():
     st.title('Chat Bot Page')
     st.write('This is the chat bot page of my app.')
-    # Add your chat bot code here
-    # Load the Pinecone client using st.cache
-    docsearch = load_pinecone(embeddings, "db-paseg")
-    # Create the Chat and RetrievalQA objects
+
+    # Load Pinecone and create Chat and RetrievalQA objects
+    docsearch = load_pinecone("db-paseg")
     chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
     qachain = load_qa_chain(chat, chain_type='stuff')
     qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
-    
-    condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
-    
+
+    # Define the query function
+    def query():
+        condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
+        # Let the user input a query
+        #query = st.text_input("Enter your query:")
+        # Run the QA system and display the result using Streamlit
+        result = qa.run(query + '\n' + condition1)
+        st.write(result)
+
     st.title("PASEG Genie // for education purpose :coffee:")
-    #st.markdown("Donate a coffee")
     st.markdown("*Chat With The Planning and Schedule Excellence Guide ver. 5.0*", unsafe_allow_html=True)
     st.markdown("---")
     # Let the user input a query
     query()
-    
-
-# Define your main function
-def main():
-    # Define the state of your app
-    if 'page' not in st.session_state:
-        st.session_state.page = 'Data Analysis'
-
-    # Define the contents of the sidebar
-    st.sidebar.title('Navigation')
-    option = st.sidebar.selectbox('Select an option', ('Data Analysis', 'Chat Bot'))
-
-    # Define the different pages of your app
-    if option == 'Data Analysis':
-        st.session_state.page = 'Data Analysis'
-        data_analysis_page()
-    elif option == 'Chat Bot':
-        st.session_state.page = 'Chat Bot'
-        chat_bot_page()
 
 # Call your main function to run the app
 if __name__ == '__main__':
