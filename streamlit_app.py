@@ -63,7 +63,7 @@ def chat_bot_page():
     st.write('This is the chat bot page of my app.')
 
     # Load Pinecone and create Chat and RetrievalQA objects
-    docsearch = load_pinecone(embeddings,index_name)
+    docsearch = load_pinecone("db-paseg")
     chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
     qachain = load_qa_chain(chat, chain_type='stuff')
     qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
@@ -73,14 +73,16 @@ def chat_bot_page():
         condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
         # Let the user input a query
         user_query = st.text_input("Enter your query:")
-        # Run the QA system and display the result using Streamlit
-        result = qa.run(user_query + '\n' + condition1)
-        st.write(result)
+        # Display the button
+        if st.button("Run Query"):
+            # Run the QA system and display the result using Streamlit
+            result = qa.run(user_query + '\n' + condition1)
+            st.write(result)
 
     st.title("PASEG Genie // for education purpose :coffee:")
     st.markdown("*Chat With The Planning and Schedule Excellence Guide ver. 5.0*", unsafe_allow_html=True)
     st.markdown("---")
-    # Let the user input a query
+    # Let the user input a query and run the query
     run_query()
 
 # Define your main function
