@@ -63,7 +63,7 @@ def chat_bot_page():
     st.write('This is the chat bot page of my app.')
 
     # Load Pinecone and create Chat and RetrievalQA objects
-    docsearch = load_pinecone("db-paseg")
+    docsearch = load_pinecone(embeddings,"db-paseg")
     chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
     qachain = load_qa_chain(chat, chain_type='stuff')
     qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
