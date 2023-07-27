@@ -72,7 +72,7 @@ def chat_bot_page():
     def run_query():
         condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
         # Let the user input a query
-        user_query = st.text_input("Enter your query:")
+        user_query = st.text_input("Enter your query:", key="query1")
         # Display the button
         if st.button("Run Query"):
             # Run the QA system and display the result using Streamlit
