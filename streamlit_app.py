@@ -56,12 +56,13 @@ def query():
     chat = ChatOpenAI(model_name='gpt-3.5-turbo-0613', temperature=0.80)
     qachain = load_qa_chain(chat, chain_type='stuff')
     qa = RetrievalQA(combine_documents_chain=qachain, retriever=docsearch.as_retriever())
+    
     condition1 = '\n [Generate Response/Text from my data.]  \n [organize information: organize text so its easy to read, and bullet points when needed.] \n [if applicable for the question response, add section: Things to Promote/Things to Avoid and Best Practices, give Examples] \n [tone and voice style: clear sentences, avoid use of complex sentences]'
+    
     # Let the user input a query
-    #query = st.text_input("Enter your query:")
+    user_query = st.text_input("Enter your query:")
     # Run the QA system and display the result using Streamlit
-
-    result = qa.run(query + '\n' + condition1)
+    result = qa.run(user_query + '\n' + condition1)
     st.write(result)
     
 
